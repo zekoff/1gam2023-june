@@ -18,35 +18,232 @@
 					"id": "on-start-of-layout",
 					"objectClass": "System",
 					"sid": 763643925042124
-				},
-				{
-					"id": "for-each",
-					"objectClass": "System",
-					"sid": 816419129021310,
-					"parameters": {
-						"object": "Marker"
-					}
 				}
 			],
 			"actions": [
 				{
-					"id": "set-instvar-value",
-					"objectClass": "CollisionBox",
-					"sid": 189432432556993,
+					"id": "sync-object",
+					"objectClass": "Multiplayer",
+					"sid": 333554719565974,
 					"parameters": {
-						"instance-variable": "position",
-						"value": "Marker.position"
+						"object": "Marker",
+						"data": "position-only",
+						"precision": "normal-float-4-bytes",
+						"bandwidth": "normal-bandwidth-unpredictable"
+					}
+				},
+				{
+					"id": "sync-instance-variable",
+					"objectClass": "Multiplayer",
+					"sid": 869931306727611,
+					"parameters": {
+						"object": "Marker",
+						"instance-variable": {
+							"name": "marked",
+							"objectClass": "Marker"
+						},
+						"precision": "very-low-uint8-1-byte",
+						"interpolation": "none",
+						"client-value-tag": "\"\""
+					}
+				},
+				{
+					"id": "sync-instance-variable",
+					"objectClass": "Multiplayer",
+					"sid": 481759411737898,
+					"parameters": {
+						"object": "Marker",
+						"instance-variable": {
+							"name": "animation",
+							"objectClass": "Marker"
+						},
+						"precision": "very-low-uint8-1-byte",
+						"interpolation": "none",
+						"client-value-tag": "\"\""
+					}
+				},
+				{
+					"id": "connect",
+					"objectClass": "Multiplayer",
+					"sid": 178526255992229,
+					"parameters": {
+						"server": "\"wss://multiplayer.scirra.com\""
 					}
 				}
 			],
-			"sid": 516179635348190
+			"sid": 516179635348190,
+			"children": [
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "for-each",
+							"objectClass": "System",
+							"sid": 369605740329759,
+							"parameters": {
+								"object": "Marker"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-instvar-value",
+							"objectClass": "CollisionBox",
+							"sid": 492042560494675,
+							"parameters": {
+								"instance-variable": "position",
+								"value": "Marker.position"
+							}
+						}
+					],
+					"sid": 584364295149540
+				}
+			]
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-connected",
+					"objectClass": "Multiplayer",
+					"sid": 430070402457360
+				}
+			],
+			"actions": [
+				{
+					"callFunction": "AddMessage",
+					"sid": 982710750587975,
+					"parameters": [
+						"\"Connected\""
+					]
+				},
+				{
+					"id": "log-in",
+					"objectClass": "Multiplayer",
+					"sid": 802994818546884,
+					"parameters": {
+						"alias": "\"test\""
+					}
+				}
+			],
+			"sid": 876929752450655
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-logged-in",
+					"objectClass": "Multiplayer",
+					"sid": 898718531053747
+				}
+			],
+			"actions": [
+				{
+					"callFunction": "AddMessage",
+					"sid": 438723275189980,
+					"parameters": [
+						"\"Logged in\""
+					]
+				},
+				{
+					"id": "auto-join-room",
+					"objectClass": "Multiplayer",
+					"sid": 301726180001106,
+					"parameters": {
+						"game": "\"zekoff-1gam2023-june\"",
+						"instance": "\"default\"",
+						"first-room": "\"room\"",
+						"max-peers": "2",
+						"locking": "lock-when-full"
+					}
+				}
+			],
+			"sid": 640278775196301
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-joined-room",
+					"objectClass": "Multiplayer",
+					"sid": 312449196728155
+				}
+			],
+			"actions": [],
+			"sid": 367213670647919,
+			"children": [
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "is-host",
+							"objectClass": "Multiplayer",
+							"sid": 868704028351979
+						}
+					],
+					"actions": [
+						{
+							"callFunction": "AddMessage",
+							"sid": 332497181799923,
+							"parameters": [
+								"\"Host\""
+							]
+						},
+						{
+							"id": "set-group-active",
+							"objectClass": "System",
+							"sid": 702062002941494,
+							"parameters": {
+								"group-name": "\"Host\"",
+								"state": "activated"
+							}
+						}
+					],
+					"sid": 572721224868758
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "else",
+							"objectClass": "System",
+							"sid": 994672585294211
+						}
+					],
+					"actions": [
+						{
+							"callFunction": "AddMessage",
+							"sid": 273665188102280,
+							"parameters": [
+								"\"Peer\""
+							]
+						},
+						{
+							"id": "set-group-active",
+							"objectClass": "System",
+							"sid": 635436285150152,
+							"parameters": {
+								"group-name": "\"Client\"",
+								"state": "activated"
+							}
+						},
+						{
+							"id": "destroy",
+							"objectClass": "Marker",
+							"sid": 386565081078726,
+							"disabled": true
+						}
+					],
+					"sid": 198733999321538
+				}
+			]
 		},
 		{
 			"eventType": "group",
 			"disabled": false,
 			"title": "Client",
 			"description": "",
-			"isActiveOnStart": true,
+			"isActiveOnStart": false,
 			"children": [
 				{
 					"eventType": "block",
@@ -63,12 +260,20 @@
 							"id": "compare-boolean-eventvar",
 							"objectClass": "System",
 							"sid": 905155280606604,
+							"disabled": true,
 							"parameters": {
 								"variable": "clientTurn"
 							}
 						}
 					],
 					"actions": [
+						{
+							"callFunction": "AddMessage",
+							"sid": 636334949651142,
+							"parameters": [
+								"\"Message sent\""
+							]
+						},
 						{
 							"id": "send-message",
 							"objectClass": "Multiplayer",
@@ -78,6 +283,15 @@
 								"tag": "\"tapPosition\"",
 								"message": "str(CollisionBox.position)",
 								"mode": "reliable-ordered"
+							}
+						},
+						{
+							"id": "toggle-boolean-eventvar",
+							"objectClass": "System",
+							"sid": 632798795959015,
+							"disabled": true,
+							"parameters": {
+								"variable": "clientTurn"
 							}
 						}
 					],
@@ -91,7 +305,7 @@
 			"disabled": false,
 			"title": "Host",
 			"description": "",
-			"isActiveOnStart": true,
+			"isActiveOnStart": false,
 			"children": [
 				{
 					"eventType": "block",
@@ -116,20 +330,39 @@
 					],
 					"actions": [
 						{
-							"id": "set-visible",
-							"objectClass": "Marker",
-							"sid": 297451129457381,
-							"parameters": {
-								"visibility": "visible"
-							}
-						},
-						{
 							"id": "set-animation",
 							"objectClass": "Marker",
 							"sid": 481491963047593,
+							"disabled": true,
 							"parameters": {
 								"animation": "\"Animation 2\"",
 								"from": "beginning"
+							}
+						},
+						{
+							"id": "toggle-boolean-eventvar",
+							"objectClass": "System",
+							"sid": 743050804218460,
+							"parameters": {
+								"variable": "clientTurn"
+							}
+						},
+						{
+							"id": "set-instvar-value",
+							"objectClass": "Marker",
+							"sid": 392389934391541,
+							"parameters": {
+								"instance-variable": "marked",
+								"value": "1"
+							}
+						},
+						{
+							"id": "set-instvar-value",
+							"objectClass": "Marker",
+							"sid": 383774561141429,
+							"parameters": {
+								"instance-variable": "animation",
+								"value": "0"
 							}
 						}
 					],
@@ -147,6 +380,14 @@
 							}
 						},
 						{
+							"id": "compare-boolean-eventvar",
+							"objectClass": "System",
+							"sid": 469707236924191,
+							"parameters": {
+								"variable": "clientTurn"
+							}
+						},
+						{
 							"id": "compare-instance-variable",
 							"objectClass": "Marker",
 							"sid": 830853777111899,
@@ -159,20 +400,39 @@
 					],
 					"actions": [
 						{
-							"id": "set-visible",
-							"objectClass": "Marker",
-							"sid": 772428279046883,
-							"parameters": {
-								"visibility": "visible"
-							}
-						},
-						{
 							"id": "set-animation",
 							"objectClass": "Marker",
 							"sid": 599289288182671,
+							"disabled": true,
 							"parameters": {
 								"animation": "\"Animation 3\"",
 								"from": "beginning"
+							}
+						},
+						{
+							"id": "toggle-boolean-eventvar",
+							"objectClass": "System",
+							"sid": 883915469236859,
+							"parameters": {
+								"variable": "clientTurn"
+							}
+						},
+						{
+							"id": "set-instvar-value",
+							"objectClass": "Marker",
+							"sid": 785202634385265,
+							"parameters": {
+								"instance-variable": "marked",
+								"value": "1"
+							}
+						},
+						{
+							"id": "set-instvar-value",
+							"objectClass": "Marker",
+							"sid": 197624837774313,
+							"parameters": {
+								"instance-variable": "animation",
+								"value": "1"
 							}
 						}
 					],
@@ -180,6 +440,182 @@
 				}
 			],
 			"sid": 201696604616526
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "every-tick",
+					"objectClass": "System",
+					"sid": 479582102406376
+				},
+				{
+					"id": "for-each",
+					"objectClass": "System",
+					"sid": 127169337289857,
+					"parameters": {
+						"object": "Marker"
+					}
+				}
+			],
+			"actions": [],
+			"sid": 339271660173423,
+			"children": [
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "evaluate-expression",
+							"objectClass": "System",
+							"sid": 506038628265162,
+							"parameters": {
+								"value": "Marker.marked"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-visible",
+							"objectClass": "Marker",
+							"sid": 867931703742902,
+							"parameters": {
+								"visibility": "visible"
+							}
+						}
+					],
+					"sid": 620728499911545
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "evaluate-expression",
+							"objectClass": "System",
+							"sid": 475401171749803,
+							"parameters": {
+								"value": "Marker.animation"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-animation",
+							"objectClass": "Marker",
+							"sid": 353320195845788,
+							"parameters": {
+								"animation": "\"Animation 3\"",
+								"from": "beginning"
+							}
+						}
+					],
+					"sid": 737289633473713
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "else",
+							"objectClass": "System",
+							"sid": 779398780762434
+						}
+					],
+					"actions": [
+						{
+							"id": "set-animation",
+							"objectClass": "Marker",
+							"sid": 425652767484817,
+							"parameters": {
+								"animation": "\"Animation 2\"",
+								"from": "beginning"
+							}
+						}
+					],
+					"sid": 406525115632486
+				}
+			]
+		},
+		{
+			"eventType": "group",
+			"disabled": false,
+			"title": "Message Log",
+			"description": "",
+			"isActiveOnStart": true,
+			"children": [
+				{
+					"functionName": "AddMessage",
+					"functionDescription": "",
+					"functionCategory": "",
+					"functionReturnType": "none",
+					"functionCopyPicked": false,
+					"functionIsAsync": false,
+					"functionParameters": [
+						{
+							"name": "message",
+							"type": "string",
+							"initialValue": "",
+							"comment": "",
+							"sid": 487112600949246
+						}
+					],
+					"eventType": "function-block",
+					"conditions": [],
+					"actions": [
+						{
+							"id": "push",
+							"objectClass": "Messages",
+							"sid": 560270263249133,
+							"parameters": {
+								"where": "back",
+								"value": "message",
+								"axis": "x"
+							}
+						}
+					],
+					"sid": 463170911039842,
+					"children": [
+						{
+							"eventType": "block",
+							"conditions": [],
+							"actions": [
+								{
+									"id": "set-text",
+									"objectClass": "MessageText",
+									"sid": 480908839532735,
+									"parameters": {
+										"text": "\"\""
+									}
+								}
+							],
+							"sid": 825766814762370
+						},
+						{
+							"eventType": "block",
+							"conditions": [
+								{
+									"id": "for-each-element",
+									"objectClass": "Messages",
+									"sid": 965629604569510,
+									"parameters": {
+										"axes": "x"
+									}
+								}
+							],
+							"actions": [
+								{
+									"id": "append-text",
+									"objectClass": "MessageText",
+									"sid": 970784725672217,
+									"parameters": {
+										"text": "Messages.CurValue & newline"
+									}
+								}
+							],
+							"sid": 534281400120318
+						}
+					]
+				}
+			],
+			"sid": 785425816549739
 		}
 	],
 	"sid": 289129673389816

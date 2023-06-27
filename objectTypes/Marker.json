@@ -10,6 +10,20 @@
 			"desc": "Number 0 through 8 for position in grid, starting top left and progressing left to right, top to bottom.",
 			"show": true,
 			"sid": 609535923530037
+		},
+		{
+			"name": "marked",
+			"type": "number",
+			"desc": "",
+			"show": true,
+			"sid": 977549017781047
+		},
+		{
+			"name": "animation",
+			"type": "number",
+			"desc": "",
+			"show": true,
+			"sid": 295174755608526
 		}
 	],
 	"behaviorTypes": [],
