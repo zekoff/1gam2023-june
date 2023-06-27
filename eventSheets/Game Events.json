@@ -1,0 +1,186 @@
+{
+	"name": "Game Events",
+	"events": [
+		{
+			"eventType": "variable",
+			"name": "clientTurn",
+			"type": "boolean",
+			"initialValue": "false",
+			"comment": "False on host's turn, true on client's turn.",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 483003199767417
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "on-start-of-layout",
+					"objectClass": "System",
+					"sid": 763643925042124
+				},
+				{
+					"id": "for-each",
+					"objectClass": "System",
+					"sid": 816419129021310,
+					"parameters": {
+						"object": "Marker"
+					}
+				}
+			],
+			"actions": [
+				{
+					"id": "set-instvar-value",
+					"objectClass": "CollisionBox",
+					"sid": 189432432556993,
+					"parameters": {
+						"instance-variable": "position",
+						"value": "Marker.position"
+					}
+				}
+			],
+			"sid": 516179635348190
+		},
+		{
+			"eventType": "group",
+			"disabled": false,
+			"title": "Client",
+			"description": "",
+			"isActiveOnStart": true,
+			"children": [
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-tap-object",
+							"objectClass": "Touch",
+							"sid": 221867867777785,
+							"parameters": {
+								"object": "CollisionBox"
+							}
+						},
+						{
+							"id": "compare-boolean-eventvar",
+							"objectClass": "System",
+							"sid": 905155280606604,
+							"parameters": {
+								"variable": "clientTurn"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "send-message",
+							"objectClass": "Multiplayer",
+							"sid": 287745752748724,
+							"parameters": {
+								"peer-id": "\"\"",
+								"tag": "\"tapPosition\"",
+								"message": "str(CollisionBox.position)",
+								"mode": "reliable-ordered"
+							}
+						}
+					],
+					"sid": 351604106107453
+				}
+			],
+			"sid": 954858230914213
+		},
+		{
+			"eventType": "group",
+			"disabled": false,
+			"title": "Host",
+			"description": "",
+			"isActiveOnStart": true,
+			"children": [
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-tap-object",
+							"objectClass": "Touch",
+							"sid": 279772204913544,
+							"parameters": {
+								"object": "CollisionBox"
+							}
+						},
+						{
+							"id": "compare-boolean-eventvar",
+							"objectClass": "System",
+							"sid": 248116214557708,
+							"parameters": {
+								"variable": "clientTurn"
+							},
+							"isInverted": true
+						}
+					],
+					"actions": [
+						{
+							"id": "set-visible",
+							"objectClass": "Marker",
+							"sid": 297451129457381,
+							"parameters": {
+								"visibility": "visible"
+							}
+						},
+						{
+							"id": "set-animation",
+							"objectClass": "Marker",
+							"sid": 481491963047593,
+							"parameters": {
+								"animation": "\"Animation 2\"",
+								"from": "beginning"
+							}
+						}
+					],
+					"sid": 104646931989811
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-peer-message",
+							"objectClass": "Multiplayer",
+							"sid": 412597075540122,
+							"parameters": {
+								"tag": "\"tapPosition\""
+							}
+						},
+						{
+							"id": "compare-instance-variable",
+							"objectClass": "Marker",
+							"sid": 830853777111899,
+							"parameters": {
+								"instance-variable": "position",
+								"comparison": 0,
+								"value": "int(Multiplayer.Message)"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-visible",
+							"objectClass": "Marker",
+							"sid": 772428279046883,
+							"parameters": {
+								"visibility": "visible"
+							}
+						},
+						{
+							"id": "set-animation",
+							"objectClass": "Marker",
+							"sid": 599289288182671,
+							"parameters": {
+								"animation": "\"Animation 3\"",
+								"from": "beginning"
+							}
+						}
+					],
+					"sid": 417590107009388
+				}
+			],
+			"sid": 201696604616526
+		}
+	],
+	"sid": 289129673389816
+}

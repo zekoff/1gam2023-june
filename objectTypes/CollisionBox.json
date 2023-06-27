@@ -1,0 +1,57 @@
+{
+	"name": "CollisionBox",
+	"plugin-id": "Sprite",
+	"sid": 371533169493102,
+	"isGlobal": false,
+	"instanceVariables": [
+		{
+			"name": "position",
+			"type": "number",
+			"desc": "",
+			"show": true,
+			"sid": 896704519238272
+		}
+	],
+	"behaviorTypes": [],
+	"effectTypes": [],
+	"animations": {
+		"items": [
+			{
+				"frames": [
+					{
+						"width": 248,
+						"height": 250,
+						"originX": 0.4959677419354839,
+						"originY": 0.496,
+						"originalSource": "",
+						"exportFormat": "lossless",
+						"exportQuality": 0.8,
+						"imageSpriteId": 2849786,
+						"collisionPoly": {
+							"points": [
+								0,
+								0,
+								1,
+								0,
+								1,
+								0.996,
+								0,
+								0.996
+							]
+						},
+						"useCollisionPoly": true,
+						"duration": 1
+					}
+				],
+				"sid": 173212268297765,
+				"name": "Animation 1",
+				"isLooping": false,
+				"isPingPong": false,
+				"repeatCount": 1,
+				"repeatTo": 0,
+				"speed": 5
+			}
+		],
+		"subfolders": []
+	}
+}
