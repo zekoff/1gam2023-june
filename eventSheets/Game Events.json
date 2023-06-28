@@ -24,7 +24,7 @@
 				{
 					"id": "sync-object",
 					"objectClass": "Multiplayer",
-					"sid": 333554719565974,
+					"sid": 821816651852767,
 					"parameters": {
 						"object": "Marker",
 						"data": "position-only",
@@ -63,11 +63,45 @@
 					}
 				},
 				{
+					"id": "sync-object",
+					"objectClass": "Multiplayer",
+					"sid": 562033481118396,
+					"parameters": {
+						"object": "GameController",
+						"data": "position-only",
+						"precision": "normal-float-4-bytes",
+						"bandwidth": "normal-bandwidth-unpredictable"
+					}
+				},
+				{
+					"id": "sync-instance-variable",
+					"objectClass": "Multiplayer",
+					"sid": 445971064080025,
+					"parameters": {
+						"object": "GameController",
+						"instance-variable": {
+							"name": "peerTurn",
+							"objectClass": "GameController"
+						},
+						"precision": "very-low-uint8-1-byte",
+						"interpolation": "none",
+						"client-value-tag": "\"\""
+					}
+				},
+				{
 					"id": "connect",
 					"objectClass": "Multiplayer",
 					"sid": 178526255992229,
 					"parameters": {
 						"server": "\"wss://multiplayer.scirra.com\""
+					}
+				},
+				{
+					"id": "clear",
+					"objectClass": "Marks",
+					"sid": 100121283075440,
+					"parameters": {
+						"value": "8"
 					}
 				}
 			],
@@ -221,11 +255,16 @@
 						{
 							"id": "set-group-active",
 							"objectClass": "System",
-							"sid": 635436285150152,
+							"sid": 346903596410879,
 							"parameters": {
-								"group-name": "\"Client\"",
+								"group-name": "\"Peer\"",
 								"state": "activated"
 							}
+						},
+						{
+							"id": "destroy",
+							"objectClass": "GameController",
+							"sid": 562232850339957
 						},
 						{
 							"id": "destroy",
@@ -241,7 +280,7 @@
 		{
 			"eventType": "group",
 			"disabled": false,
-			"title": "Client",
+			"title": "Peer",
 			"description": "",
 			"isActiveOnStart": false,
 			"children": [
@@ -257,12 +296,13 @@
 							}
 						},
 						{
-							"id": "compare-boolean-eventvar",
-							"objectClass": "System",
-							"sid": 905155280606604,
-							"disabled": true,
+							"id": "compare-instance-variable",
+							"objectClass": "GameController",
+							"sid": 874694394831686,
 							"parameters": {
-								"variable": "clientTurn"
+								"instance-variable": "peerTurn",
+								"comparison": 4,
+								"value": "0"
 							}
 						}
 					],
@@ -283,15 +323,6 @@
 								"tag": "\"tapPosition\"",
 								"message": "str(CollisionBox.position)",
 								"mode": "reliable-ordered"
-							}
-						},
-						{
-							"id": "toggle-boolean-eventvar",
-							"objectClass": "System",
-							"sid": 632798795959015,
-							"disabled": true,
-							"parameters": {
-								"variable": "clientTurn"
 							}
 						}
 					],
@@ -319,34 +350,27 @@
 							}
 						},
 						{
-							"id": "compare-boolean-eventvar",
-							"objectClass": "System",
-							"sid": 248116214557708,
+							"id": "compare-instance-variable",
+							"objectClass": "GameController",
+							"sid": 778985580980493,
 							"parameters": {
-								"variable": "clientTurn"
-							},
-							"isInverted": true
+								"instance-variable": "peerTurn",
+								"comparison": 0,
+								"value": "0"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 228373952947563,
+							"parameters": {
+								"x": "Marker.position",
+								"comparison": 0,
+								"value": "8"
+							}
 						}
 					],
 					"actions": [
-						{
-							"id": "set-animation",
-							"objectClass": "Marker",
-							"sid": 481491963047593,
-							"disabled": true,
-							"parameters": {
-								"animation": "\"Animation 2\"",
-								"from": "beginning"
-							}
-						},
-						{
-							"id": "toggle-boolean-eventvar",
-							"objectClass": "System",
-							"sid": 743050804218460,
-							"parameters": {
-								"variable": "clientTurn"
-							}
-						},
 						{
 							"id": "set-instvar-value",
 							"objectClass": "Marker",
@@ -358,11 +382,29 @@
 						},
 						{
 							"id": "set-instvar-value",
+							"objectClass": "GameController",
+							"sid": 690095601286554,
+							"parameters": {
+								"instance-variable": "peerTurn",
+								"value": "1"
+							}
+						},
+						{
+							"id": "set-instvar-value",
 							"objectClass": "Marker",
 							"sid": 383774561141429,
 							"parameters": {
 								"instance-variable": "animation",
 								"value": "0"
+							}
+						},
+						{
+							"id": "set-at-x",
+							"objectClass": "Marks",
+							"sid": 598261491463899,
+							"parameters": {
+								"x": "Marker.position",
+								"value": "\"X\""
 							}
 						}
 					],
@@ -380,14 +422,6 @@
 							}
 						},
 						{
-							"id": "compare-boolean-eventvar",
-							"objectClass": "System",
-							"sid": 469707236924191,
-							"parameters": {
-								"variable": "clientTurn"
-							}
-						},
-						{
 							"id": "compare-instance-variable",
 							"objectClass": "Marker",
 							"sid": 830853777111899,
@@ -396,25 +430,36 @@
 								"comparison": 0,
 								"value": "int(Multiplayer.Message)"
 							}
+						},
+						{
+							"id": "compare-instance-variable",
+							"objectClass": "GameController",
+							"sid": 481347372370827,
+							"parameters": {
+								"instance-variable": "peerTurn",
+								"comparison": 4,
+								"value": "0"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 317499646941307,
+							"parameters": {
+								"x": "Marker.position",
+								"comparison": 0,
+								"value": "8"
+							}
 						}
 					],
 					"actions": [
 						{
-							"id": "set-animation",
-							"objectClass": "Marker",
-							"sid": 599289288182671,
-							"disabled": true,
+							"id": "set-instvar-value",
+							"objectClass": "GameController",
+							"sid": 308229416054349,
 							"parameters": {
-								"animation": "\"Animation 3\"",
-								"from": "beginning"
-							}
-						},
-						{
-							"id": "toggle-boolean-eventvar",
-							"objectClass": "System",
-							"sid": 883915469236859,
-							"parameters": {
-								"variable": "clientTurn"
+								"instance-variable": "peerTurn",
+								"value": "0"
 							}
 						},
 						{
@@ -433,6 +478,15 @@
 							"parameters": {
 								"instance-variable": "animation",
 								"value": "1"
+							}
+						},
+						{
+							"id": "set-at-x",
+							"objectClass": "Marks",
+							"sid": 336808894864903,
+							"parameters": {
+								"x": "Marker.position",
+								"value": "\"O\""
 							}
 						}
 					],
@@ -535,6 +589,142 @@
 			]
 		},
 		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "every-tick",
+					"objectClass": "System",
+					"sid": 755409576675827
+				}
+			],
+			"actions": [],
+			"sid": 585959334529960,
+			"children": [
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "compare-instance-variable",
+							"objectClass": "GameController",
+							"sid": 396325427363864,
+							"parameters": {
+								"instance-variable": "peerTurn",
+								"comparison": 0,
+								"value": "0"
+							}
+						}
+					],
+					"actions": [],
+					"sid": 296732310881196,
+					"children": [
+						{
+							"eventType": "block",
+							"conditions": [
+								{
+									"id": "is-host",
+									"objectClass": "Multiplayer",
+									"sid": 288774907030271
+								}
+							],
+							"actions": [
+								{
+									"id": "set-text",
+									"objectClass": "StatusMessage",
+									"sid": 604682745804272,
+									"parameters": {
+										"text": "\"YOUR TURN\""
+									}
+								}
+							],
+							"sid": 234396197491306
+						},
+						{
+							"eventType": "block",
+							"conditions": [
+								{
+									"id": "else",
+									"objectClass": "System",
+									"sid": 465015683686544
+								}
+							],
+							"actions": [
+								{
+									"id": "set-text",
+									"objectClass": "StatusMessage",
+									"sid": 440519074790813,
+									"parameters": {
+										"text": "\"THEIR TURN\""
+									}
+								}
+							],
+							"sid": 804160897854551
+						}
+					]
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "compare-instance-variable",
+							"objectClass": "GameController",
+							"sid": 440295454680555,
+							"parameters": {
+								"instance-variable": "peerTurn",
+								"comparison": 4,
+								"value": "0"
+							}
+						}
+					],
+					"actions": [],
+					"sid": 477624474803512,
+					"children": [
+						{
+							"eventType": "block",
+							"conditions": [
+								{
+									"id": "is-host",
+									"objectClass": "Multiplayer",
+									"sid": 791604962115742
+								}
+							],
+							"actions": [
+								{
+									"id": "set-text",
+									"objectClass": "StatusMessage",
+									"sid": 130526407888983,
+									"parameters": {
+										"text": "\"THEIR TURN\""
+									}
+								}
+							],
+							"sid": 353130315985765
+						},
+						{
+							"eventType": "block",
+							"conditions": [
+								{
+									"id": "else",
+									"objectClass": "System",
+									"sid": 621927173660780
+								}
+							],
+							"actions": [
+								{
+									"id": "set-text",
+									"objectClass": "StatusMessage",
+									"sid": 775283163636775,
+									"parameters": {
+										"text": "\"YOUR TURN\""
+									}
+								}
+							],
+							"sid": 185172615745475
+						}
+					]
+				}
+			]
+		},
+		{
 			"eventType": "group",
 			"disabled": false,
 			"title": "Message Log",
@@ -573,6 +763,33 @@
 					],
 					"sid": 463170911039842,
 					"children": [
+						{
+							"eventType": "block",
+							"conditions": [
+								{
+									"id": "compare-size",
+									"objectClass": "Messages",
+									"sid": 326217949757565,
+									"parameters": {
+										"axis": "x",
+										"comparison": 4,
+										"value": "10"
+									}
+								}
+							],
+							"actions": [
+								{
+									"id": "pop",
+									"objectClass": "Messages",
+									"sid": 919332404886080,
+									"parameters": {
+										"where": "front",
+										"axis": "x"
+									}
+								}
+							],
+							"sid": 717155283552469
+						},
 						{
 							"eventType": "block",
 							"conditions": [],

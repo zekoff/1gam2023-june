@@ -58,7 +58,10 @@
 			"CollisionBox",
 			"Touch",
 			"MessageText",
-			"Messages"
+			"Messages",
+			"GameController",
+			"Marks",
+			"StatusMessage"
 		],
 		"subfolders": []
 	},

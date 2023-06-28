@@ -1,0 +1,9 @@
+{
+	"name": "StatusMessage",
+	"plugin-id": "Text",
+	"sid": 725192189204520,
+	"isGlobal": false,
+	"instanceVariables": [],
+	"behaviorTypes": [],
+	"effectTypes": []
+}
