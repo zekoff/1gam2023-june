@@ -22,12 +22,18 @@
 				{
 					"id": "set-instvar-value",
 					"objectClass": "GameController",
-					"sid": 105567884108194,
-					"disabled": true,
+					"sid": 841107003415202,
 					"parameters": {
 						"instance-variable": "peerTurn",
-						"value": "random(0, 1)"
+						"value": "round(random(1))"
 					}
+				},
+				{
+					"callFunction": "AddMessage",
+					"sid": 495340212597855,
+					"parameters": [
+						"str(GameController.peerTurn)"
+					]
 				},
 				{
 					"id": "set-text",
@@ -911,11 +917,6 @@
 			"eventType": "block",
 			"conditions": [
 				{
-					"id": "else",
-					"objectClass": "System",
-					"sid": 717892975139542
-				},
-				{
 					"id": "evaluate-expression",
 					"objectClass": "System",
 					"sid": 868939905078709,
@@ -974,9 +975,22 @@
 			"eventType": "block",
 			"conditions": [
 				{
-					"id": "else",
+					"id": "evaluate-expression",
 					"objectClass": "System",
-					"sid": 796976507408702
+					"sid": 442421016027278,
+					"parameters": {
+						"value": "Functions.CheckWin(\"O\")"
+					},
+					"isInverted": true
+				},
+				{
+					"id": "evaluate-expression",
+					"objectClass": "System",
+					"sid": 353199527636729,
+					"parameters": {
+						"value": "Functions.CheckWin(\"X\")"
+					},
+					"isInverted": true
 				},
 				{
 					"id": "evaluate-expression",
