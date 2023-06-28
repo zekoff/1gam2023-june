@@ -61,7 +61,8 @@
 			"Messages",
 			"GameController",
 			"Marks",
-			"StatusMessage"
+			"StatusMessage",
+			"GameEndText"
 		],
 		"subfolders": []
 	},

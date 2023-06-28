@@ -22,6 +22,32 @@
 			],
 			"actions": [
 				{
+					"id": "clear",
+					"objectClass": "Marks",
+					"sid": 800962418345882,
+					"parameters": {
+						"value": "8"
+					}
+				},
+				{
+					"id": "set-instvar-value",
+					"objectClass": "GameController",
+					"sid": 105567884108194,
+					"disabled": true,
+					"parameters": {
+						"instance-variable": "peerTurn",
+						"value": "random(0, 1)"
+					}
+				},
+				{
+					"id": "set-text",
+					"objectClass": "GameEndText",
+					"sid": 418215461047405,
+					"parameters": {
+						"text": "\"\""
+					}
+				},
+				{
 					"id": "sync-object",
 					"objectClass": "Multiplayer",
 					"sid": 821816651852767,
@@ -94,14 +120,6 @@
 					"sid": 178526255992229,
 					"parameters": {
 						"server": "\"wss://multiplayer.scirra.com\""
-					}
-				},
-				{
-					"id": "clear",
-					"objectClass": "Marks",
-					"sid": 100121283075440,
-					"parameters": {
-						"value": "8"
 					}
 				}
 			],
@@ -265,12 +283,6 @@
 							"id": "destroy",
 							"objectClass": "GameController",
 							"sid": 562232850339957
-						},
-						{
-							"id": "destroy",
-							"objectClass": "Marker",
-							"sid": 386565081078726,
-							"disabled": true
 						}
 					],
 					"sid": 198733999321538
@@ -327,6 +339,48 @@
 						}
 					],
 					"sid": 351604106107453
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "on-peer-message",
+							"objectClass": "Multiplayer",
+							"sid": 456994624286848,
+							"parameters": {
+								"tag": "\"game-end\""
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-text",
+							"objectClass": "GameEndText",
+							"sid": 140249166692193,
+							"parameters": {
+								"text": "Multiplayer.Message"
+							}
+						},
+						{
+							"id": "wait",
+							"objectClass": "System",
+							"sid": 967451894425377,
+							"parameters": {
+								"seconds": "3"
+							}
+						},
+						{
+							"id": "wait-for-previous-actions",
+							"objectClass": "System",
+							"sid": 924223436197392
+						},
+						{
+							"id": "restart-layout",
+							"objectClass": "System",
+							"sid": 549318585570193
+						}
+					],
+					"sid": 401195863545283
 				}
 			],
 			"sid": 954858230914213
@@ -725,6 +779,134 @@
 			]
 		},
 		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "every-tick",
+					"objectClass": "System",
+					"sid": 345244521198154,
+					"disabled": true
+				},
+				{
+					"id": "evaluate-expression",
+					"objectClass": "System",
+					"sid": 572833362849052,
+					"parameters": {
+						"value": "Functions.CheckWin(\"X\")"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 156461903917782
+				}
+			],
+			"actions": [
+				{
+					"id": "set-text",
+					"objectClass": "GameEndText",
+					"sid": 315823585873186,
+					"parameters": {
+						"text": "\"GREEN PENTAGON WINS!\""
+					}
+				},
+				{
+					"id": "broadcast-message",
+					"objectClass": "Multiplayer",
+					"sid": 970055514163313,
+					"parameters": {
+						"from-id": "\"\"",
+						"tag": "\"game-end\"",
+						"message": "\"GREEN PENTAGON WINS!\"",
+						"mode": "reliable-ordered"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 925103939198468,
+					"parameters": {
+						"seconds": "3"
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 980763528660837
+				},
+				{
+					"id": "restart-layout",
+					"objectClass": "System",
+					"sid": 567276124917492
+				}
+			],
+			"sid": 707937002405809
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "every-tick",
+					"objectClass": "System",
+					"sid": 258564706088860,
+					"disabled": true
+				},
+				{
+					"id": "evaluate-expression",
+					"objectClass": "System",
+					"sid": 868939905078709,
+					"parameters": {
+						"value": "Functions.CheckWin(\"O\")"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 645555117929703
+				}
+			],
+			"actions": [
+				{
+					"id": "set-text",
+					"objectClass": "GameEndText",
+					"sid": 870135833506708,
+					"parameters": {
+						"text": "\"BLUE SQUARE WINS!\""
+					}
+				},
+				{
+					"id": "broadcast-message",
+					"objectClass": "Multiplayer",
+					"sid": 525771059947328,
+					"parameters": {
+						"from-id": "\"\"",
+						"tag": "\"game-end\"",
+						"message": "\"GREEN PENTAGON WINS!\"",
+						"mode": "reliable-ordered"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 904035367892514,
+					"parameters": {
+						"seconds": "3"
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 719157978284416
+				},
+				{
+					"id": "restart-layout",
+					"objectClass": "System",
+					"sid": 414961806678827
+				}
+			],
+			"sid": 408925404840057
+		},
+		{
 			"eventType": "group",
 			"disabled": false,
 			"title": "Message Log",
@@ -833,6 +1015,406 @@
 				}
 			],
 			"sid": 785425816549739
+		},
+		{
+			"functionName": "CheckWin",
+			"functionDescription": "",
+			"functionCategory": "",
+			"functionReturnType": "number",
+			"functionCopyPicked": false,
+			"functionIsAsync": false,
+			"functionParameters": [
+				{
+					"name": "mark",
+					"type": "string",
+					"initialValue": "\"X\"",
+					"comment": "",
+					"sid": 216659315944749
+				}
+			],
+			"eventType": "function-block",
+			"conditions": [],
+			"actions": [
+				{
+					"id": "set-function-return-value",
+					"objectClass": "Functions",
+					"sid": 174111038380057,
+					"parameters": {
+						"value": "0"
+					}
+				}
+			],
+			"sid": 359834485978044,
+			"children": [
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 329119874669670,
+							"parameters": {
+								"x": "0",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 195970016099079,
+							"parameters": {
+								"x": "1",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 913933807342205,
+							"parameters": {
+								"x": "2",
+								"comparison": 0,
+								"value": "mark"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-function-return-value",
+							"objectClass": "Functions",
+							"sid": 416988941259789,
+							"parameters": {
+								"value": "1"
+							}
+						}
+					],
+					"sid": 185429165191743
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 525700156911496,
+							"parameters": {
+								"x": "3",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 779151413978091,
+							"parameters": {
+								"x": "4",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 340368389553765,
+							"parameters": {
+								"x": "5",
+								"comparison": 0,
+								"value": "mark"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-function-return-value",
+							"objectClass": "Functions",
+							"sid": 472205487500322,
+							"parameters": {
+								"value": "1"
+							}
+						}
+					],
+					"sid": 512818390872220
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 304915026263646,
+							"parameters": {
+								"x": "6",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 451431570959835,
+							"parameters": {
+								"x": "7",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 358762899337740,
+							"parameters": {
+								"x": "8",
+								"comparison": 0,
+								"value": "mark"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-function-return-value",
+							"objectClass": "Functions",
+							"sid": 996365559542153,
+							"parameters": {
+								"value": "1"
+							}
+						}
+					],
+					"sid": 959852519674496
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 767559316006829,
+							"parameters": {
+								"x": "0",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 507478566604645,
+							"parameters": {
+								"x": "3",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 339162289168821,
+							"parameters": {
+								"x": "6",
+								"comparison": 0,
+								"value": "mark"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-function-return-value",
+							"objectClass": "Functions",
+							"sid": 732053455380700,
+							"parameters": {
+								"value": "1"
+							}
+						}
+					],
+					"sid": 232249341116842
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 448745574450445,
+							"parameters": {
+								"x": "1",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 301750520855206,
+							"parameters": {
+								"x": "4",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 937390821200984,
+							"parameters": {
+								"x": "7",
+								"comparison": 0,
+								"value": "mark"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-function-return-value",
+							"objectClass": "Functions",
+							"sid": 459866138261638,
+							"parameters": {
+								"value": "1"
+							}
+						}
+					],
+					"sid": 323800015344740
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 841477488043476,
+							"parameters": {
+								"x": "2",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 414437605264180,
+							"parameters": {
+								"x": "5",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 757080916726626,
+							"parameters": {
+								"x": "8",
+								"comparison": 0,
+								"value": "mark"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-function-return-value",
+							"objectClass": "Functions",
+							"sid": 259921402970386,
+							"parameters": {
+								"value": "1"
+							}
+						}
+					],
+					"sid": 875231517408192
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 588055646882794,
+							"parameters": {
+								"x": "0",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 231354345895136,
+							"parameters": {
+								"x": "4",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 990837470218407,
+							"parameters": {
+								"x": "8",
+								"comparison": 0,
+								"value": "mark"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-function-return-value",
+							"objectClass": "Functions",
+							"sid": 854506549974978,
+							"parameters": {
+								"value": "1"
+							}
+						}
+					],
+					"sid": 929063505742542
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 850322323000324,
+							"parameters": {
+								"x": "2",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 798494967236438,
+							"parameters": {
+								"x": "4",
+								"comparison": 0,
+								"value": "mark"
+							}
+						},
+						{
+							"id": "compare-at-x",
+							"objectClass": "Marks",
+							"sid": 132767742201591,
+							"parameters": {
+								"x": "6",
+								"comparison": 0,
+								"value": "mark"
+							}
+						}
+					],
+					"actions": [
+						{
+							"id": "set-function-return-value",
+							"objectClass": "Functions",
+							"sid": 227532456902653,
+							"parameters": {
+								"value": "1"
+							}
+						}
+					],
+					"sid": 124693655815022
+				}
+			]
 		}
 	],
 	"sid": 289129673389816
