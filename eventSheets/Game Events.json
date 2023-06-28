@@ -2,16 +2,6 @@
 	"name": "Game Events",
 	"events": [
 		{
-			"eventType": "variable",
-			"name": "clientTurn",
-			"type": "boolean",
-			"initialValue": "false",
-			"comment": "False on host's turn, true on client's turn.",
-			"isStatic": false,
-			"isConstant": false,
-			"sid": 483003199767417
-		},
-		{
 			"eventType": "block",
 			"conditions": [
 				{
@@ -149,6 +139,80 @@
 						}
 					],
 					"sid": 584364295149540
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "is-host",
+							"objectClass": "Multiplayer",
+							"sid": 897798420336834
+						},
+						{
+							"id": "is-in-room",
+							"objectClass": "Multiplayer",
+							"sid": 314275512719819
+						}
+					],
+					"actions": [
+						{
+							"callFunction": "AddMessage",
+							"sid": 738428518628391,
+							"parameters": [
+								"\"Host\""
+							]
+						},
+						{
+							"id": "set-group-active",
+							"objectClass": "System",
+							"sid": 182793010260972,
+							"parameters": {
+								"group-name": "\"Host\"",
+								"state": "activated"
+							}
+						}
+					],
+					"sid": 239941103415954
+				},
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "is-host",
+							"objectClass": "Multiplayer",
+							"sid": 139566597872082,
+							"isInverted": true
+						},
+						{
+							"id": "is-in-room",
+							"objectClass": "Multiplayer",
+							"sid": 159366350546628
+						}
+					],
+					"actions": [
+						{
+							"callFunction": "AddMessage",
+							"sid": 953504239434007,
+							"parameters": [
+								"\"Peer\""
+							]
+						},
+						{
+							"id": "set-group-active",
+							"objectClass": "System",
+							"sid": 217101113855831,
+							"parameters": {
+								"group-name": "\"Peer\"",
+								"state": "activated"
+							}
+						},
+						{
+							"id": "destroy",
+							"objectClass": "GameController",
+							"sid": 131965786355642
+						}
+					],
+					"sid": 854260985450260
 				}
 			]
 		},
@@ -508,6 +572,13 @@
 					],
 					"actions": [
 						{
+							"callFunction": "AddMessage",
+							"sid": 588975552779725,
+							"parameters": [
+								"\"Message received\""
+							]
+						},
+						{
 							"id": "set-instvar-value",
 							"objectClass": "GameController",
 							"sid": 308229416054349,
@@ -782,12 +853,6 @@
 			"eventType": "block",
 			"conditions": [
 				{
-					"id": "every-tick",
-					"objectClass": "System",
-					"sid": 345244521198154,
-					"disabled": true
-				},
-				{
 					"id": "evaluate-expression",
 					"objectClass": "System",
 					"sid": 572833362849052,
@@ -846,10 +911,9 @@
 			"eventType": "block",
 			"conditions": [
 				{
-					"id": "every-tick",
+					"id": "else",
 					"objectClass": "System",
-					"sid": 258564706088860,
-					"disabled": true
+					"sid": 717892975139542
 				},
 				{
 					"id": "evaluate-expression",
@@ -877,11 +941,11 @@
 				{
 					"id": "broadcast-message",
 					"objectClass": "Multiplayer",
-					"sid": 525771059947328,
+					"sid": 613619614121178,
 					"parameters": {
 						"from-id": "\"\"",
 						"tag": "\"game-end\"",
-						"message": "\"GREEN PENTAGON WINS!\"",
+						"message": "\"BLUE SQUARE WINS!\"",
 						"mode": "reliable-ordered"
 					}
 				},
@@ -905,6 +969,69 @@
 				}
 			],
 			"sid": 408925404840057
+		},
+		{
+			"eventType": "block",
+			"conditions": [
+				{
+					"id": "else",
+					"objectClass": "System",
+					"sid": 796976507408702
+				},
+				{
+					"id": "evaluate-expression",
+					"objectClass": "System",
+					"sid": 898994079815675,
+					"parameters": {
+						"value": "Functions.CheckCat = 9"
+					}
+				},
+				{
+					"id": "trigger-once-while-true",
+					"objectClass": "System",
+					"sid": 656820921843823
+				}
+			],
+			"actions": [
+				{
+					"id": "set-text",
+					"objectClass": "GameEndText",
+					"sid": 774122487596003,
+					"parameters": {
+						"text": "\"CAT!\""
+					}
+				},
+				{
+					"id": "broadcast-message",
+					"objectClass": "Multiplayer",
+					"sid": 463450215760780,
+					"parameters": {
+						"from-id": "\"\"",
+						"tag": "\"game-end\"",
+						"message": "\"CAT!\"",
+						"mode": "reliable-ordered"
+					}
+				},
+				{
+					"id": "wait",
+					"objectClass": "System",
+					"sid": 963032289067975,
+					"parameters": {
+						"seconds": "3"
+					}
+				},
+				{
+					"id": "wait-for-previous-actions",
+					"objectClass": "System",
+					"sid": 571391294539062
+				},
+				{
+					"id": "restart-layout",
+					"objectClass": "System",
+					"sid": 213737791576396
+				}
+			],
+			"sid": 207031463786953
 		},
 		{
 			"eventType": "group",
@@ -1413,6 +1540,109 @@
 						}
 					],
 					"sid": 124693655815022
+				}
+			]
+		},
+		{
+			"eventType": "variable",
+			"name": "marksMade",
+			"type": "number",
+			"initialValue": "0",
+			"comment": "",
+			"isStatic": false,
+			"isConstant": false,
+			"sid": 951945389146949
+		},
+		{
+			"functionName": "CheckCat",
+			"functionDescription": "",
+			"functionCategory": "",
+			"functionReturnType": "number",
+			"functionCopyPicked": false,
+			"functionIsAsync": false,
+			"functionParameters": [],
+			"eventType": "function-block",
+			"conditions": [],
+			"actions": [
+				{
+					"id": "set-eventvar-value",
+					"objectClass": "System",
+					"sid": 926258921508134,
+					"parameters": {
+						"variable": "marksMade",
+						"value": "0"
+					}
+				}
+			],
+			"sid": 140168830745260,
+			"children": [
+				{
+					"eventType": "block",
+					"conditions": [
+						{
+							"id": "for-each-element",
+							"objectClass": "Marks",
+							"sid": 872129553049549,
+							"parameters": {
+								"axes": "x"
+							}
+						}
+					],
+					"actions": [],
+					"sid": 502406425607223,
+					"children": [
+						{
+							"eventType": "block",
+							"conditions": [
+								{
+									"id": "compare-current-value",
+									"objectClass": "Marks",
+									"sid": 308986560888672,
+									"parameters": {
+										"comparison": 0,
+										"value": "\"X\""
+									}
+								},
+								{
+									"id": "compare-current-value",
+									"objectClass": "Marks",
+									"sid": 323121712074033,
+									"parameters": {
+										"comparison": 0,
+										"value": "\"O\""
+									}
+								}
+							],
+							"actions": [
+								{
+									"id": "add-to-eventvar",
+									"objectClass": "System",
+									"sid": 964664087307893,
+									"parameters": {
+										"variable": "marksMade",
+										"value": "1"
+									}
+								}
+							],
+							"sid": 686281648090401,
+							"isOrBlock": true
+						}
+					]
+				},
+				{
+					"eventType": "block",
+					"conditions": [],
+					"actions": [
+						{
+							"id": "set-function-return-value",
+							"objectClass": "Functions",
+							"sid": 740407732963685,
+							"parameters": {
+								"value": "marksMade"
+							}
+						}
+					],
+					"sid": 843035186508587
 				}
 			]
 		}
