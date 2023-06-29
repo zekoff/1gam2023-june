@@ -874,6 +874,24 @@
 			],
 			"actions": [
 				{
+					"id": "set-group-active",
+					"objectClass": "System",
+					"sid": 357027031006955,
+					"parameters": {
+						"group-name": "\"Peer\"",
+						"state": "deactivated"
+					}
+				},
+				{
+					"id": "set-group-active",
+					"objectClass": "System",
+					"sid": 523314881844114,
+					"parameters": {
+						"group-name": "\"Host\"",
+						"state": "deactivated"
+					}
+				},
+				{
 					"id": "set-text",
 					"objectClass": "GameEndText",
 					"sid": 315823585873186,
@@ -931,6 +949,24 @@
 				}
 			],
 			"actions": [
+				{
+					"id": "set-group-active",
+					"objectClass": "System",
+					"sid": 892331913416612,
+					"parameters": {
+						"group-name": "\"Peer\"",
+						"state": "deactivated"
+					}
+				},
+				{
+					"id": "set-group-active",
+					"objectClass": "System",
+					"sid": 945497128888431,
+					"parameters": {
+						"group-name": "\"Host\"",
+						"state": "deactivated"
+					}
+				},
 				{
 					"id": "set-text",
 					"objectClass": "GameEndText",
